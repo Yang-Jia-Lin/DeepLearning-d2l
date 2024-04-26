@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" promptOnRemoteOverwrite="CHECK_TIMESTAMP" serverName="kuanghl_d2l" useTempFile="true" deleteMissingItems="true" confirmBeforeUploading="false" confirmBeforeDeletion="false" compareModeInSync="TEXT">
+    <option name="confirmBeforeDeletion" value="false" />
+    <option name="confirmBeforeUploading" value="false" />
+    <serverData>
+      <paths name="kuanghl">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/yangjialin/Codes/d2l" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="kuanghl_d2l">
+        <serverdata>
+          <mappings>
+            <mapping deploy="yangjialin/Codes/d2l" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
