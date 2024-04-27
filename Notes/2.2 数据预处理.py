@@ -2,8 +2,8 @@ import os
 
 # %%
 # 创建人工数据集并存储与CSV
-os.makedirs(os.path.join('..', 'data'), exist_ok=True)      # 创建目录
-data_file = os.path.join('..', 'data', 'house_tiny.csv')    # 新csv文件的路径字符串
+os.makedirs(os.path.join('.', 'NotesData'), exist_ok=True)      # 创建目录
+data_file = os.path.join('.', 'NotesData', 'house_tiny.csv')    # 新csv文件的路径字符串
 with open(data_file, 'w') as f:
     f.write('NumRooms,RoofType,Price\n')
     f.write('NA,NA,127500\n')

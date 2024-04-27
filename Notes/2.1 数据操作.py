@@ -12,7 +12,7 @@ print(x1.numel())        # 访问元素个数
 
 # %%
 # 改变元素形状
-x2 = x1.reshape(3, 4)     # 注意x不会改变，只会返回一个新的torch
+x2 = x1.reshape(3, 4)     # 这里 x2 是 x1 的一个 view，实际上还是 x1
 print(x2)
 print(x2.shape)
 print(x2.numel())
