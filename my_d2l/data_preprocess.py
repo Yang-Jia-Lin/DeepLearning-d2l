@@ -30,7 +30,7 @@ def load_array(data_arrays, batch_size, is_train=True):
 
 
 def get_dataloader_workers():
-    """使用4个进程来读取数据"""
+    """读取数据的进程数"""
     return 4
 
 

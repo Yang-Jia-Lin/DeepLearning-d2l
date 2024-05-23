@@ -1,5 +1,5 @@
 from d2l import torch as d2l
-from tools import Accumulator
+from d2l_tools import Accumulator
 
 
 def accuracy(y_hat, y):
