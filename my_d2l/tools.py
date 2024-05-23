@@ -4,23 +4,21 @@ from d2l import torch as d2l
 
 
 def get_fashion_mnist_labels(labels):
-    """返回Fashion-MNIST数据集的文本标签"""
+    """根据数字标签返回 Fashion-MNIST 数据集的文本标签"""
     text_labels = ['t-shirt', 'trouser', 'pullover', 'dress', 'coat',
                    'sandal', 'shirt', 'sneaker', 'bag', 'ankle boot']
     return [text_labels[int(i)] for i in labels]
 
 
-def show_images(imgs, num_rows, num_cols, titles=None, scale=1.5):  #@save
+def show_images(imgs, num_rows, num_cols, titles=None, scale=1.5):
     """绘制图像列表"""
     figsize = (num_cols * scale, num_rows * scale)
     _, axes = d2l.plt.subplots(num_rows, num_cols, figsize=figsize)
     axes = axes.flatten()
     for i, (ax, img) in enumerate(zip(axes, imgs)):
-        if torch.is_tensor(img):
-            # 图片张量
+        if torch.is_tensor(img):    # 张量图片
             ax.imshow(img.numpy())
-        else:
-            # PIL图片
+        else:   # PIL图片
             ax.imshow(img)
         ax.axes.get_xaxis().set_visible(False)
         ax.axes.get_yaxis().set_visible(False)
@@ -30,7 +28,7 @@ def show_images(imgs, num_rows, num_cols, titles=None, scale=1.5):  #@save
 
 
 class Animator:
-    """动画显示训练过程"""
+    """训练过程动画显示"""
     def __init__(self, xlabel=None, ylabel=None, legend=None, xlim=None,
                  ylim=None, xscale='linear', yscale='linear',
                  fmts=('-', 'm--', 'g-.', 'r:'), nrows=1, ncols=1,
@@ -83,28 +81,3 @@ class Accumulator:
 
     def __getitem__(self, idx):
         return self.data[idx]
-
-
-def accuracy(y_hat, y):
-    """计算预测正确的个数"""
-    if len(y_hat.shape) > 1 and y_hat.shape[1] > 1:
-        y_hat = d2l.argmax(y_hat, axis=1)
-    cmp = d2l.astype(y_hat, y.dtype) == y
-    return float(d2l.reduce_sum(d2l.astype(cmp, y.dtype)))
-
-
-def evaluate_accuracy_scratch(net, data_iter, W, b):
-    """计算指定数据集上的模型精度——手动实现需要 W,b"""
-    metric = Accumulator(2)  #正确预测数、预测总数
-    for X, y in data_iter:
-        metric.add(accuracy(net(W, b, X), y), y.numel())
-    return metric[0] / metric[1]
-
-
-def evaluate_accuracy_concise(net, data_iter):
-    """计算指定数据集上的模型精度——自动实现"""
-    net.eval()  #不累计梯度
-    metric = Accumulator(2)  #正确预测数、预测总数
-    for X, y in data_iter:
-        metric.add(accuracy(net(X), y), y.numel())
-    return metric[0] / metric[1]

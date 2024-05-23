@@ -1,5 +1,6 @@
 import torch
 import data_preprocess
+import evaluate
 import tools
 # from d2l import torch as d2l
 
@@ -35,10 +36,10 @@ def softmax_scratch_train(net, train_iter, test_iter, loss, num_epochs, updater,
             l = loss(y_hat, y)
             l.sum().backward()
             updater(W, b, lr, X.shape[0])
-            metric.add(float(l.sum()), tools.accuracy(y_hat, y), y.numel())
+            metric.add(float(l.sum()), evaluate.accuracy(y_hat, y), y.numel())
         train_metrics = metric[0] / metric[2], metric[1] / metric[2]
         print(f'epoch {epoch + 1}, loss {train_metrics[0]:.5f}, acc {train_metrics[1]:.5f}')
-    test_acc = tools.evaluate_accuracy_scratch(net, test_iter, W, b)
+    test_acc = evaluate.evaluate_accuracy_scratch(net, test_iter, W, b)
     print(f'完成训练，在测试集上 acc {test_acc:.5f} \n')
 def softmax_concise_train(net, train_iter, test_iter, loss, num_epochs, updater):
     """softmax训练"""
@@ -52,10 +53,10 @@ def softmax_concise_train(net, train_iter, test_iter, loss, num_epochs, updater)
             updater.zero_grad()
             l.mean().backward()
             updater.step()
-            metric.add(float(l.sum()), tools.accuracy(y_hat, y), y.numel())
+            metric.add(float(l.sum()), evaluate.accuracy(y_hat, y), y.numel())
         train_metrics = metric[0] / metric[2], metric[1] / metric[2]
         print(f'epoch {epoch + 1}, loss {train_metrics[0]:.5f}, acc {train_metrics[1]:.5f}')
         # test_acc = tools.evaluate_accuracy(net, test_iter, W, b)
         # animator.add(epoch + 1, train_metrics + (test_acc,))
-    test_acc = tools.evaluate_accuracy_concise(net, test_iter)
+    test_acc = evaluate.evaluate_accuracy_concise(net, test_iter)
     print(f'完成训练，在测试集上 acc {test_acc:.5f}')

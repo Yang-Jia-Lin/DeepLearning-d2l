@@ -5,7 +5,6 @@ from torch.utils import data
 from torchvision import transforms
 
 
-
 def synthetic_data(w, b, num_examples):
     """生成数据——线性回归"""
     X = torch.normal(0, 1, (num_examples, len(w)))
