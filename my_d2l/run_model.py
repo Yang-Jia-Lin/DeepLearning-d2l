@@ -1,10 +1,11 @@
 import torch
+from torch import nn
+
 import data_preprocess
-import train_model
 import net_model
 import loss_model
 import updater_model
-from torch import nn
+import train_model
 
 
 def linear_scratch():
@@ -15,12 +16,12 @@ def linear_scratch():
     lr = 0.03
 
     net = net_model.linreg
-    w = torch.normal(0, 0.01, size=(2, 1), requires_grad=True)
+    W = torch.normal(0, 0.01, size=(2, 1), requires_grad=True)
     b = torch.zeros(1, requires_grad=True)
     loss = loss_model.squared_loss
     updater = updater_model.sgd
 
-    train_model.linear_scratch_train(num_epochs, batch_size, lr, loss, updater, net, features, labels, w, b)
+    train_model.linear_scratch_train(num_epochs, batch_size, lr, features, labels, net, [W, b], loss, updater)
 
 
 def linear_concise():
@@ -36,7 +37,7 @@ def linear_concise():
     loss = nn.MSELoss()
     trainer = torch.optim.SGD(net.parameters(), lr)
 
-    train_model.linear_concise_train(num_epochs, batch_size, loss, trainer, net, features, labels)
+    train_model.linear_concise_train(num_epochs, batch_size, features, labels, net, loss, trainer)
 
 
 def softmax_scratch():
@@ -52,7 +53,7 @@ def softmax_scratch():
     loss = loss_model.cross_entropy
     updater = updater_model.sgd
 
-    train_model.softmax_scratch_train(net, train_iter, test_iter, loss, num_epochs, updater, W, b, lr)
+    train_model.softmax_scratch_train(num_epochs, batch_size, lr, train_iter, test_iter, net, [W, b], loss, updater)
 
 
 def softmax_concise():
@@ -62,9 +63,9 @@ def softmax_concise():
     lr = 0.1
     train_iter, test_iter = data_preprocess.load_data_fashion_mnist(batch_size)
 
-    net = nn.Sequential(nn.Flatten(), nn.Linear(784, 10))
+    net = nn.Sequential(nn.Flatten(), nn.Linear(28 * 28, 10))
     net.apply(net_model.init_weights)
     loss = nn.CrossEntropyLoss()
-    trainer = torch.optim.SGD(net.parameters(), lr)
+    updater = torch.optim.SGD(net.parameters(), lr)
 
-    train_model.softmax_concise_train(net, train_iter, test_iter, loss, num_epochs, trainer)
+    train_model.softmax_concise_train(num_epochs, train_iter, test_iter, net, loss, updater)
