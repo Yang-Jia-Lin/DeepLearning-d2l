@@ -1,6 +1,6 @@
 import torch
 import data_preprocess
-import evaluate
+import evaluate_model
 import d2l_tools
 
 
@@ -57,10 +57,10 @@ def softmax_scratch_train(num_epochs, batch_size, lr, train_iter, test_iter, net
             # 4.更新参数
             updater(params, lr, batch_size)
             # 5.累加损失和精度
-            metric.add(float(l.sum()), evaluate.accuracy(y_hat, y), y.numel())  # 不参与backward
+            metric.add(float(l.sum()), evaluate_model.accuracy(y_hat, y), y.numel())  # 不参与backward
         # 模型评估
         train_metrics = metric[0] / metric[2], metric[1] / metric[2]  # 训练完一个epoch后的平均损失、预测准确率
-        test_acc = evaluate.evaluate_accuracy_scratch(net, test_iter, params[0], params[1])
+        test_acc = evaluate_model.evaluate_accuracy_scratch(net, test_iter, params[0], params[1])
         print(f'epoch {epoch + 1}, loss {train_metrics[0]:.5f}, train_acc {train_metrics[1]:.5f}, test_acc {test_acc:.5f}')
     print(f'完成训练\n')
 
@@ -82,9 +82,9 @@ def softmax_concise_train(num_epochs, train_iter, test_iter, net, loss, updater)
             # 4.更新参数
             updater.step()
             # 5.累加损失和精度
-            metric.add(float(l.sum()), evaluate.accuracy(y_hat, y), y.numel())  # 不累计梯度
+            metric.add(float(l.sum()), evaluate_model.accuracy(y_hat, y), y.numel())  # 不累计梯度
         # 模型评估
         train_metrics = metric[0] / metric[2], metric[1] / metric[2]  # 训练完一个epoch后的平均损失、预测准确率
-        test_acc = evaluate.evaluate_accuracy_concise(net, test_iter)
+        test_acc = evaluate_model.evaluate_accuracy_concise(net, test_iter)
         print(f'epoch {epoch + 1}, loss {train_metrics[0]:.5f}, train_acc {train_metrics[1]:.5f}, test_acc {test_acc:.5f}')
     print('完成训练')
