@@ -63,7 +63,7 @@ def softmax_concise():
     lr = 0.1
     train_iter, test_iter = data_preprocess.load_data_fashion_mnist(batch_size)
 
-    net = nn.Sequential(nn.Flatten(), nn.Linear(28 * 28, 10))
+    net = nn.Sequential(nn.Flatten(), nn.Linear(28 * 28, 10)) # softmax集成在损失函数CrossEntropyLoss中，因此不需要显式表示
     net.apply(net_model.init_weights)
     loss = nn.CrossEntropyLoss()
     updater = torch.optim.SGD(net.parameters(), lr)

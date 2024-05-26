@@ -51,7 +51,7 @@ def softmax_scratch_train(num_epochs, batch_size, lr, train_iter, test_iter, net
             # 1.正向传播
             y_hat = net(X, params[0], params[1])
             # 2.计算损失
-            l = loss(y_hat, y)  # 参与backward
+            l = loss(y_hat, y)  # batch_size个元素的向量
             # 3.反向传播
             l.sum().backward()
             # 4.更新参数
