@@ -11,11 +11,11 @@ def accuracy(y_hat, y):
     return float(reduce_sum(astype(cmp, y.dtype)))  # 统计正确的数量并转化为float输出
 
 
-def evaluate_accuracy_scratch(net, data_iter, W, b):
+def evaluate_accuracy_scratch(net, data_iter, params):
     """数据集上的预测准确率——手动实现"""
     metric = Accumulator(2)  # 正确预测数、预测总数
     for X, y in data_iter:
-        metric.add(accuracy(net(X, W, b), y), y.numel())
+        metric.add(accuracy(net(X, params), y), y.numel())
     return metric[0] / metric[1]
 
 
