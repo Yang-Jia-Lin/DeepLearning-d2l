@@ -12,3 +12,8 @@ def cross_entropy(y_hat, y):
     # y 形状：[N]的向量，表示每一个样本的实际类别编码
     return - torch.log(y_hat[range(len(y_hat)), y])
     # range(N)是行索引（有N个元素），y是列索引（也有N个元素）
+
+
+# 权重衰减（惩罚项）
+def l2_penalty(w):
+    return torch.sum(w.pow(2)) / 2

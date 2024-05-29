@@ -15,6 +15,17 @@ def relu(X):
     return torch.max(X, a)
 
 
+def dropout_layer(X, dropout):
+    assert 0 <= dropout <= 1 # 确保丢弃概率合法
+    # 所有元素都丢弃
+    if dropout == 1:
+        return torch.zeros_like(X)
+    # 所有元素都保留
+    if dropout == 0:
+        return X
+    mask = torch.rand(X.shape) > dropout
+    return mask * X / (1.0 - dropout)
+
 # 网络结构
 def linreg(X, params):
     """线性回归——1层——输出层"""
