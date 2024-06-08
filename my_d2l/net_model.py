@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from torch.nn import functional as F
 
 # 操作子和激活函数
 def softmax(X):
@@ -26,7 +27,7 @@ def dropout_layer(X, dropout):
     mask = torch.rand(X.shape) > dropout
     return mask * X / (1.0 - dropout)
 
-# 网络结构
+# 从零开始实现网络结构
 def linreg(X, params):
     """线性回归——1层——输出层"""
     return torch.matmul(X, params[0]) + params[1]
@@ -42,6 +43,33 @@ def MLP(X, params):
     X = X.reshape((-1, 784))
     H = relu(X @ params[0] + params[1])
     return softmax(H @ params[2] + params[3])
+
+
+# 简洁实现网络结构
+class MySequential(nn.Module):
+    def __init__(self, *args):
+        super().__init__()
+        # module是Module子类的一个实例, 把它保存在'Module'类的成员中
+        for idx, module in enumerate(args):
+            self._modules[str(idx)] = module # 变量_modules中。_module的类型是OrderedDict
+
+    def forward(self, X):
+        # OrderedDict保证按照成员添加顺序遍历
+        for block in self._modules.values():
+            X = block(X)
+        return X
+
+
+class MLP_nn(nn.Module):
+    # 参数声明
+    def __init__(self):
+        super().__init__() # 调用MLP的父类Module的构造函数来初始化。这样也可以指定其他函数参数（模型参数params）
+        self.hidden = nn.Linear(20, 256)
+        self.out = nn.Linear(256, 10)
+
+    # 前向传播
+    def forward(self, X):
+        return self.out(F.relu(self.hidden(X))) # ReLU的函数版本，其在nn.functional模块中定义。
 
 
 # 网络参数初始化
